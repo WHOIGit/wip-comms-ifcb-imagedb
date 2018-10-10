@@ -6,6 +6,8 @@ Writes IFCB images and minimal metadata to a PostgreSQL database in ppm format
 
 ### Initial setup
 
+* Requries PostgreSQL
+* Install [pyifcb](https://github.com/joefutrelle/pyifcb#installation-via-anaconda) and psycopg2
 * Create database and run `schema.sql` to create table
 * Copy `settings_template.py` to `settings.py`
 * Edit connection parameters in `settings.py`
