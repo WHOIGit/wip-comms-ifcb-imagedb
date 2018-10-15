@@ -15,4 +15,4 @@ Writes IFCB images and minimal metadata to a PostgreSQL database in ppm format
 
 ### Running
 
-* When data is present, run `ifcb_db.py`
+* When data is present, run `ifcb_db.py` periodically to put new images in the db
