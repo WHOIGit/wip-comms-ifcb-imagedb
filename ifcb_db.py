@@ -30,7 +30,7 @@ class IfcbDb(object):
     def _insert_row(self, bin_lid, image_number, time, x, y, image):
         """insert one row representing an image and its minimal metadata"""
         self.db.execute('insert into ifcb (bin_lid, image_number, time, x, y, image) values (%s, %s, %s, %s, %s, %s)',
-                        (bin_lid, image_number, time, int(x), int(y), image))
+                        (bin_lid, int(image_number), time, int(x), int(y), image))
         self.conn.commit()
         
     # API
