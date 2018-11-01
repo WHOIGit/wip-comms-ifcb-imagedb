@@ -59,6 +59,13 @@ class IfcbDb(object):
         for img_no in b.images_adc.index:
             self.add_image(b, img_no)
 
+    def add_table(self):
+        """add the table if it doesn't exist"""
+        with open('schema.sql', 'r') as schema:
+            sql = schema.read()
+            self.db.execute(sql)
+            self.conn.commit()
+            
     def scan(self, dir):
         """scan a directory and add all bins found"""
         logging.debug('scanning {} ...'.format(dir))
@@ -74,4 +81,5 @@ class IfcbDb(object):
 if __name__ == '__main__':
     """scan the data directory and add new images to the database"""
     db = IfcbDb(**PSQL_CONNECTION_PARAMS)
+    db.add_table()
     db.scan(DATA_DIR)
