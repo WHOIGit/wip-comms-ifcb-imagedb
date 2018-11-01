@@ -3,7 +3,6 @@ import logging
 import numpy as np
 import pandas as pd
 import psycopg2 as psql
-from PIL import Image
 
 import ifcb
 from ifcb.data.imageio import format_image
@@ -48,10 +47,10 @@ class IfcbDb(object):
         target = bin[image_number]
         x = target[s.ROI_X]
         y = target[s.ROI_Y]
+        xsiz = target[s.ROI_WIDTH]
+        ysiz = target[s.ROI_HEIGHT]
         # convert image to ppm
         image_array = bin.images[image_number]
-        im = Image.fromarray(image_array)
-        xsiz, ysiz = im.size
         image_ppm = format_image(image_array, 'image/x-portable-pixmap').getvalue()
         # write to database
         self._insert_row(bin.lid, image_number, time, x, y, xsiz, ysiz, image_ppm)
