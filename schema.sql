@@ -5,5 +5,7 @@ CREATE TABLE IF NOT EXISTS ifcb (
    time TIMESTAMP WITH TIME ZONE,
    x INT,
    y INT,
+   xsiz INT,
+   ysiz INT,
    image bytea
 )

@@ -3,6 +3,7 @@ import logging
 import numpy as np
 import pandas as pd
 import psycopg2 as psql
+from PIL import Image
 
 import ifcb
 from ifcb.data.imageio import format_image
@@ -27,10 +28,10 @@ class IfcbDb(object):
         self.db.execute('select (select count(*) from ifcb where bin_lid = %s) > 0',(bin_lid,))
         return self.db.fetchall()[0][0]
     
-    def _insert_row(self, bin_lid, image_number, time, x, y, image):
+    def _insert_row(self, bin_lid, image_number, time, x, y, xsiz, ysiz, image):
         """insert one row representing an image and its minimal metadata"""
-        self.db.execute('insert into ifcb (bin_lid, image_number, time, x, y, image) values (%s, %s, %s, %s, %s, %s)',
-                        (bin_lid, int(image_number), time, int(x), int(y), image))
+        self.db.execute('insert into ifcb (bin_lid, image_number, time, x, y, xsiz, ysiz, image) values (%s, %s, %s, %s, %s, %s, %s, %s)',
+                        (bin_lid, int(image_number), time, int(x), int(y), int(xsiz), int(ysiz), image))
         self.conn.commit()
         
     # API
@@ -49,9 +50,11 @@ class IfcbDb(object):
         y = target[s.ROI_Y]
         # convert image to ppm
         image_array = bin.images[image_number]
+        im = Image.fromarray(image_array)
+        xsiz, ysiz = im.size
         image_ppm = format_image(image_array, 'image/x-portable-pixmap').getvalue()
         # write to database
-        self._insert_row(bin.lid, image_number, time, x, y, image_ppm)
+        self._insert_row(bin.lid, image_number, time, x, y, xsiz, ysiz, image_ppm)
 
     def add_bin(self, bin):
         """add all the images from the given bin to the database"""
