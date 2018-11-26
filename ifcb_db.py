@@ -72,7 +72,10 @@ class IfcbDb(object):
         """scan a directory and add all bins found"""
         logging.debug('scanning {} ...'.format(dir))
         dd = ifcb.DataDirectory(dir)
+        bins=[]
         for bin in dd:
+            bins.append(bin)
+        for bin in reversed(bins):
             if not self.exists(bin):
                 logging.debug('adding {}'.format(bin))
                 self.add_bin(bin)
